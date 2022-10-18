@@ -1,0 +1,30 @@
+{
+    "name": "blog_list_application",
+    "version": "1.0.0",
+    "description": "��#\u0000 \u0000b\u0000l\u0000o\u0000g\u0000_\u0000l\u0000i\u0000s\u0000t\u0000_\u0000a\u0000p\u0000p\u0000l\u0000i\u0000c\u0000a\u0000t\u0000i\u0000o\u0000n\u0000\r\u0000 \u0000",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/redha-boubakour/blog_list_application.git"
+    },
+    "author": "Redha",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/redha-boubakour/blog_list_application/issues"
+    },
+    "homepage": "https://github.com/redha-boubakour/blog_list_application#readme",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "mongoose": "^6.6.5"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.20"
+    }
+}
