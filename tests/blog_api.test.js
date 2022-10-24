@@ -173,12 +173,32 @@ describe('deleting a blog', () => {
     })
 })
 
+describe('updating a blog', () => {
+    test('is successful with a status of 200', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToUpdate = blogsAtStart[0]
 
+        const updateBlog = {
+            "title": "TESTtitleUPDATE2",
+            "author": "TESTauthorUPDATE2",
+            "url": "TESTurlUPDATE2",
+            "likes": 99999
+        }
 
+        await api
+            .put(`/api/blogs/${blogToUpdate.id}`)
+            .send(updateBlog)
+            .expect(200)
 
+        const blogsAtEnd = await helper.blogsInDb()
+        const { id, ...blogAtEndWithoutId } = blogsAtEnd[0];
 
-
-
+        expect(blogsAtEnd).toHaveLength(
+            helper.initialBlogs.length
+        )
+        expect(blogAtEndWithoutId).toEqual(updateBlog)
+    })
+})
 
 afterAll(() => {
     mongoose.connection.close()
