@@ -1,9 +1,12 @@
 const supertest = require('supertest');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt')
 const helper = require('./test_helper');
+
 const app = require('../app');
 const api = supertest(app);
 
+const User = require('../models/user')
 const Blog = require('../models/blog');
 
 
@@ -39,7 +42,7 @@ beforeEach(async () => {
     }
 })
 
-describe('when there is initially some notes saved', () => {
+describe('when there is initially some blogs saved', () => {
     test('blogs are returned as json', async () => {
         await api
             .get('/api/blogs')
@@ -54,7 +57,7 @@ describe('when there is initially some notes saved', () => {
     })
 })
 
-describe('viewing a specific note', () => {
+describe('viewing a specific blog', () => {
     test('that contain a specific title', async () => {
         const response = await api.get('/api/blogs')
         const titles = response.body.map(r => r.title)
@@ -173,6 +176,7 @@ describe('deleting a blog', () => {
     })
 })
 
+// to discuss
 describe('updating a blog', () => {
     test('is successful with a status of 200', async () => {
         const blogsAtStart = await helper.blogsInDb()
@@ -202,4 +206,61 @@ describe('updating a blog', () => {
 
 afterAll(() => {
     mongoose.connection.close()
+})
+
+describe('when there is initially one user in db', () => {
+    beforeEach(async () => {
+        await User.deleteMany({})
+
+        const passwordHash = await bcrypt.hash('TESTpassword', 10)
+        const user = new User({ username: 'TESTusername', passwordHash })
+
+        await user.save()
+    })
+
+    test('creation succeeds with a fresh username', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const newUser = {
+            username: 'TESTusername2',
+            name: 'TESTname2',
+            password: 'TESTpassword2',
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const usersAtEnd = await helper.usersInDb()
+
+        expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+
+        const usernames = usersAtEnd.map(u => u.username)
+
+        expect(usernames).toContain(newUser.username)
+    })
+
+    test(' and if username is already taken, creation fails with statuscode 400', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const newUser = {
+            username: 'TESTusername',
+            name: 'TESTname',
+            password: 'TESTpassword',
+        }
+
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+        expect(result.body.error).toContain('username must be unique')
+
+        const usersAtEnd = await helper.usersInDb()
+
+        expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    })
 })
