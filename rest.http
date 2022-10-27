@@ -17,13 +17,16 @@ content-type: application/json
     "password": "TESTpassword"
 }
 
-POST http://localhost:3001/api/blogs
+POST http://localhost:3001/api/blogs HTTP/1.1
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1R1c2VybmFtZSIsImlkIjoiNjM1N2QzYWJkZjgwMDAyNTQ4ZTg5YTMyIiwiaWF0IjoxNjY2NzkyMDk0fQ.WYME2ABXFjpJv4jHBBkkv6R_tiTWCgsCZnVMGf2mUHk
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1R1c2VybmFtZSIsImlkIjoiNjM1N2QzYWJkZjgwMDAyNTQ4ZTg5YTMyIiwiaWF0IjoxNjY2ODc0OTYxLCJleHAiOjE2NjY4Nzg1NjF9.gDEeW0AhXoz-r9d-O4Yq8ooWGjvBt2-kgqhj8lptLlQ
 
 {  
-    "title": "TESTtitleWithTOKEN",
-    "author": "TESTauthorWithTOKEN",
-    "url": "TESTurlWithTOKEN",
-    "likes": 555555
+    "title": "TESTtitleWithTOKEN30",
+    "author": "TESTauthorWithTOKEN30",
+    "url": "TESTurlWithTOKEN30"
 }
+
+DELETE http://localhost:3001/api/blogs/63593cea5f61967032de1df1
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1R1c2VybmFtZSIsImlkIjoiNjM1N2QzYWJkZjgwMDAyNTQ4ZTg5YTMyIiwiaWF0IjoxNjY2ODc0OTYxLCJleHAiOjE2NjY4Nzg1NjF9.gDEeW0AhXoz-r9d-O4Yq8ooWGjvBt2-kgqhj8lptLlQ

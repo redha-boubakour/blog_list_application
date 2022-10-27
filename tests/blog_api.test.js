@@ -248,4 +248,33 @@ describe("when there is initially one user in db", () => {
 
         expect(usersAtEnd).toHaveLength(usersAtStart.length);
     });
+
+    test("if username or password are not valid, creation fails with statuscode 400", async () => {
+        const usersAtStart = await helper.usersInDb();
+
+        const shortUsername = true;
+        const shortPassword = true;
+
+        const newUser = {
+            ...(shortUsername
+                ? { username: "TE" }
+                : { username: "longUsername2" }),
+            name: "notRequiredName",
+            ...(shortPassword
+                ? { password: "TE" }
+                : { password: "longPassword2" }),
+        };
+
+        const result = await api
+            .post("/api/users")
+            .send(newUser)
+            .expect(400)
+            .expect("Content-Type", /application\/json/);
+
+        expect(result.body.error).toContain("length must be greater then 3");
+
+        const usersAtEnd = await helper.usersInDb();
+
+        expect(usersAtEnd).toHaveLength(usersAtStart.length);
+    });
 });

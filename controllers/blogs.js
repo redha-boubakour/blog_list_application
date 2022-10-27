@@ -1,11 +1,13 @@
 const blogsRouter = require("express").Router();
-const { request } = require("express");
 const jwt = require("jsonwebtoken");
 const Blog = require("../models/blog");
 const User = require("../models/user");
 
 blogsRouter.get("/", async (request, response) => {
-    const blogs = await Blog.find({});
+    const blogs = await Blog.find({}).populate("user", {
+        username: 1,
+        name: 1,
+    });
     response.json(blogs);
 });
 
@@ -18,24 +20,15 @@ blogsRouter.get("/:id", async (request, response) => {
     }
 });
 
-const getTokenFrom = (request) => {
-    const authorization = request.get("authorization");
-    if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-        return authorization.substring(7);
-    }
-    return null;
-};
-
 blogsRouter.post("/", async (request, response) => {
     const body = request.body;
-    const token = getTokenFrom(request);
-    const decodedToken = jwt.verify(token, process.env.SECRET);
+    const token = request.token;
 
+    // the "request.token" is coming from the middleware tokenExtractor which is running before the routes
+    const decodedToken = jwt.verify(token, process.env.SECRET);
     if (!decodedToken.id) {
         return response.status(401).json({ error: "token missing or invalid" });
     }
-
-    console.log(decodedToken);
 
     const user = await User.findById(decodedToken.id);
 
@@ -57,8 +50,22 @@ blogsRouter.post("/", async (request, response) => {
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
-    await Blog.findByIdAndRemove(request.params.id);
-    response.status(204).end();
+    const blogId = request.params.id;
+    const token = request.token;
+
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    if (!decodedToken.id) {
+        return response.status(401).json({ error: "token missing or invalid" });
+    }
+
+    const blog = await Blog.findById(blogId);
+
+    if (blog.user.toString() === decodedToken.id.toString()) {
+        await Blog.findByIdAndRemove(blogId);
+        response.status(204).end();
+    } else {
+        return response.status(403).json({ error: "Forbidden" });
+    }
 });
 
 blogsRouter.put("/:id", async (request, response) => {
