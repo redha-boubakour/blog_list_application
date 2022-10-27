@@ -5,28 +5,28 @@ POST http://localhost:3001/api/users HTTP/1.1
 content-type: application/json
 
 {  
-    "username": "TESTusername5",
-    "password": "TESTpassword5"
+    "username": "TESTusername10",
+    "password": "TESTpassword10"
 }
 
 POST http://localhost:3001/api/login HTTP/1.1
 content-type: application/json
 
 {  
-    "username": "TESTusername",
-    "password": "TESTpassword"
+    "username": "TESTusername10",
+    "password": "TESTpassword10"
 }
 
 POST http://localhost:3001/api/blogs HTTP/1.1
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1R1c2VybmFtZSIsImlkIjoiNjM1N2QzYWJkZjgwMDAyNTQ4ZTg5YTMyIiwiaWF0IjoxNjY2ODc0OTYxLCJleHAiOjE2NjY4Nzg1NjF9.gDEeW0AhXoz-r9d-O4Yq8ooWGjvBt2-kgqhj8lptLlQ
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1R1c2VybmFtZTEwIiwiaWQiOiI2MzVhOWY2OWRmODBiNGRhZmFhMGFhOGYiLCJpYXQiOjE2NjY4ODM0NzAsImV4cCI6MTY2Njg4NzA3MH0.HF2VRsNQ-UiIkQqCM3OSs0rbgio1897Si6zGaLgw2u4
 
 {  
-    "title": "TESTtitleWithTOKEN30",
-    "author": "TESTauthorWithTOKEN30",
-    "url": "TESTurlWithTOKEN30"
+    "title": "TESTtitleWithTOKEN99",
+    "author": "TESTauthorWithTOKEN99",
+    "url": "TESTurlWithTOKEN99"
 }
 
-DELETE http://localhost:3001/api/blogs/63593cea5f61967032de1df1
+DELETE http://localhost:3001/api/blogs/635a9facdf80b4dafaa0aa94
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1R1c2VybmFtZSIsImlkIjoiNjM1N2QzYWJkZjgwMDAyNTQ4ZTg5YTMyIiwiaWF0IjoxNjY2ODc0OTYxLCJleHAiOjE2NjY4Nzg1NjF9.gDEeW0AhXoz-r9d-O4Yq8ooWGjvBt2-kgqhj8lptLlQ
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1R1c2VybmFtZTEwIiwiaWQiOiI2MzVhOWY2OWRmODBiNGRhZmFhMGFhOGYiLCJpYXQiOjE2NjY4ODM0NzAsImV4cCI6MTY2Njg4NzA3MH0.HF2VRsNQ-UiIkQqCM3OSs0rbgio1897Si6zGaLgw2u4
