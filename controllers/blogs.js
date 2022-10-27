@@ -1,4 +1,5 @@
 const blogsRouter = require("express").Router();
+const middleware = require("../utils/middleware");
 const Blog = require("../models/blog");
 const User = require("../models/user");
 
@@ -19,7 +20,7 @@ blogsRouter.get("/:id", async (request, response) => {
     }
 });
 
-blogsRouter.post("/", async (request, response) => {
+blogsRouter.post("/", middleware.userExtractor, async (request, response) => {
     const body = request.body;
     // the "request.user" is coming from the middleware userExtractor
     const user = request.user;
@@ -41,19 +42,23 @@ blogsRouter.post("/", async (request, response) => {
     response.status(201).json(savedBlog);
 });
 
-blogsRouter.delete("/:id", async (request, response) => {
-    const blogId = request.params.id;
-    // the "request.user" is coming from the middleware userExtractor
-    const user = request.user;
-    const blog = await Blog.findById(blogId);
+blogsRouter.delete(
+    "/:id",
+    middleware.userExtractor,
+    async (request, response) => {
+        const blogId = request.params.id;
+        // the "request.user" is coming from the middleware userExtractor
+        const user = request.user;
+        const blog = await Blog.findById(blogId);
 
-    if (blog.user.toString() === user.id.toString()) {
-        await Blog.findByIdAndRemove(blogId);
-        response.status(204).end();
-    } else {
-        return response.status(403).json({ error: "Forbidden" });
+        if (blog.user.toString() === user.id.toString()) {
+            await Blog.findByIdAndRemove(blogId);
+            response.status(204).end();
+        } else {
+            return response.status(403).json({ error: "Forbidden" });
+        }
     }
-});
+);
 
 blogsRouter.put("/:id", async (request, response) => {
     const blog = {
